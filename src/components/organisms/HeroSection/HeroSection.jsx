@@ -25,13 +25,7 @@ const HeroSection = ({ scrollToSection }) => (
                         <span>VIEW PROJECTS</span>
                         <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
                     </Button>
-                    <Button
-                        variant="secondary"
-                        onClick={(e) => scrollToSection(e, '#contact')}
-                        href="#contact"
-                    >
-                        HIRE ME
-                    </Button>
+
                 </div>
             </div>
         </div>
