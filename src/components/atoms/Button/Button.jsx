@@ -1,5 +1,5 @@
 // src/components/atoms/Button/Button.jsx
-import React from 'react';
+import React, { useState } from 'react';
 
 const Button = ({
                     children,
@@ -7,9 +7,20 @@ const Button = ({
                     onClick,
                     href,
                     className = '',
+                    showBubbles = false,
                     ...props
                 }) => {
-    const baseClasses = "px-8 py-4 font-bold transition-all flex items-center space-x-2";
+    const [isHovered, setIsHovered] = useState(false);
+
+    const projectTitles = [
+        "E-Commerce Platform",
+        "Task Management App",
+        "Weather Dashboard",
+        "Social Media Analytics",
+        "Portfolio Website"
+    ];
+
+    const baseClasses = "px-8 py-4 font-bold transition-all flex items-center space-x-2 relative overflow-visible";
     const variants = {
         primary: "bg-black text-white hover:bg-gray-800",
         secondary: "border-2 border-black hover:bg-black hover:text-white"
@@ -17,17 +28,62 @@ const Button = ({
 
     const classes = `${baseClasses} ${variants[variant]} ${className}`;
 
+    const handleMouseEnter = () => setIsHovered(true);
+    const handleMouseLeave = () => setIsHovered(false);
+
+    const renderBubbles = () => {
+        if (!showBubbles) return null;
+
+        return (
+            <div className={`absolute top-0 left-full ml-4 pointer-events-none transition-all duration-300 ${
+                isHovered ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4'
+            }`}>
+                <div className="flex flex-col space-y-2">
+                    {projectTitles.map((title, index) => (
+                        <div
+                            key={title}
+                            className={`bg-white text-black px-4 py-2 rounded-lg text-sm whitespace-nowrap shadow-lg border transition-all duration-300 ${
+                                isHovered ? 'translate-x-0 opacity-100' : 'translate-x-4 opacity-0'
+                            }`}
+                            style={{
+                                transitionDelay: `${index * 50}ms`,
+                                zIndex: 50
+                            }}
+                        >
+                            {title}
+                        </div>
+                    ))}
+                </div>
+            </div>
+        );
+    };
+
     if (href) {
         return (
-            <a href={href} onClick={onClick} className={classes} {...props}>
+            <a
+                href={href}
+                onClick={onClick}
+                className={classes}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+                {...props}
+            >
                 {children}
+                {renderBubbles()}
             </a>
         );
     }
 
     return (
-        <button onClick={onClick} className={classes} {...props}>
+        <button
+            onClick={onClick}
+            className={classes}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            {...props}
+        >
             {children}
+            {renderBubbles()}
         </button>
     );
 };

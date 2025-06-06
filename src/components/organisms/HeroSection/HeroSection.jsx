@@ -21,6 +21,7 @@ const HeroSection = ({ scrollToSection }) => (
                         onClick={(e) => scrollToSection(e, '#projects')}
                         href="#projects"
                         className="group"
+                        showBubbles={true}
                     >
                         <span>VIEW PROJECTS</span>
                         <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
