@@ -1,7 +1,7 @@
-// src/components/atoms/Button/Button.jsx
+// src/components/atoms/HeroButton/HeroButton.jsx
 import React, { useState, useRef, useEffect } from 'react';
 
-const Button = ({
+const HeroButton = ({
                     children,
                     variant = 'primary',
                     onClick,
@@ -128,4 +128,4 @@ const Button = ({
     );
 };
 
-export default Button;
+export default HeroButton;

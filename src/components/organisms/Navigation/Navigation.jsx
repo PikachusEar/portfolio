@@ -32,7 +32,7 @@ const Navigation = ({ scrolled, navItems, scrollToSection }) => {
                     ))}
                 </div>
 
-                {/* Mobile Menu Button */}
+                {/* Mobile Menu HeroButton */}
                 <button
                     onClick={() => setIsMenuOpen(!isMenuOpen)}
                     className="md:hidden"

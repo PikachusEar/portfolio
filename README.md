@@ -15,7 +15,7 @@ A modern, responsive portfolio website built with React, Vite, and Tailwind CSS.
 ```
 src/
 ├── components/
-│   ├── atoms/          # Basic UI elements (Button, Heading, Text, etc.)
+│   ├── atoms/          # Basic UI elements (HeroButton, Heading, Text, etc.)
 │   ├── molecules/      # Component combinations (NavItem, ProjectCard, etc.)
 │   ├── organisms/      # Complex sections (Navigation, HeroSection, etc.)
 │   └── templates/      # Page layouts (Portfolio)

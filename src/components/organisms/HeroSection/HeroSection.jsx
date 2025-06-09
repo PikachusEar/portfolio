@@ -1,7 +1,7 @@
 // src/components/organisms/HeroSection/HeroSection.jsx
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
-import { Button, Heading } from '../../atoms';
+import { HeroButton, Heading } from '../../atoms';
 
 const HeroSection = ({ scrollToSection }) => {
     const handleProjectSelect = (projectTitle, index) => {
@@ -24,7 +24,7 @@ const HeroSection = ({ scrollToSection }) => {
                         Building exceptional digital experiences with modern technologies and creative solutions.
                     </p>
                     <div className="flex flex-wrap gap-4">
-                        <Button
+                        <HeroButton
                             variant="primary"
                             onClick={(e) => scrollToSection(e, '#projects')}
                             href="#projects"
@@ -34,7 +34,7 @@ const HeroSection = ({ scrollToSection }) => {
                         >
                             <span>VIEW PROJECTS</span>
                             <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
-                        </Button>
+                        </HeroButton>
 
                     </div>
                 </div>
