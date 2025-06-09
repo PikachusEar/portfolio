@@ -1,7 +1,18 @@
 // src/components/organisms/HeroSection/HeroSection.jsx
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
-import { HeroButton, Heading } from '../../atoms';
+import { HeroButton, Heading, SplitText } from '../../atoms';
+
+
+
+
+
+const HERO_ANIMATIONS = {
+    slideUp: {
+        from: { opacity: 0, y: 60 },
+        to: { opacity: 1, y: 0 }
+    }
+};
 
 const HeroSection = ({ scrollToSection }) => {
     const handleProjectSelect = (projectTitle, index) => {
@@ -10,11 +21,29 @@ const HeroSection = ({ scrollToSection }) => {
         // For now, scroll to projects section
         document.querySelector('#projects')?.scrollIntoView({ behavior: 'smooth' });
     };
+    const handleAnimationComplete = () => {
+        console.log('All letters have animated!');
+    };
 
     return (
         <section id="home" className="min-h-screen flex items-center relative bg-gray-50">
             <div className="container mx-auto px-6">
                 <div className="max-w-4xl">
+                    <SplitText
+                        text="Hello, GSAP!"
+                        className="text-2xl font-semibold text-center"
+                        delay={10}
+                        duration={1.5}
+                        ease="elastic.out(0.3, 0.2)"
+                        splitType="chars"
+                        from={ HERO_ANIMATIONS.slideUp.from }
+                        to={ HERO_ANIMATIONS.slideUp.to }
+                        threshold={0.1}
+                        /*rootMargin="-100px"*/
+                        textAlign="center"
+                        onLetterAnimationComplete={handleAnimationComplete}
+                    />
+
                     <Heading level={1} className="mb-6">
                         <span className="block">I'M JEREMY</span>
                         <span className="block text-gray-400">A FULL-STACK</span>
