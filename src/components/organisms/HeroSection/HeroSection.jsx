@@ -1,18 +1,7 @@
 // src/components/organisms/HeroSection/HeroSection.jsx
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
-import { HeroButton, Heading, SplitText } from '../../atoms';
-
-
-
-
-
-const HERO_ANIMATIONS = {
-    slideUp: {
-        from: { opacity: 0, y: 60 },
-        to: { opacity: 1, y: 0 }
-    }
-};
+import { HeroButton, Heading, SplitText, DecryptedText } from '../../atoms';
 
 const HeroSection = ({ scrollToSection }) => {
     const handleProjectSelect = (projectTitle, index) => {
@@ -21,34 +10,89 @@ const HeroSection = ({ scrollToSection }) => {
         // For now, scroll to projects section
         document.querySelector('#projects')?.scrollIntoView({ behavior: 'smooth' });
     };
-    const handleAnimationComplete = () => {
-        console.log('All letters have animated!');
-    };
+
 
     return (
         <section id="home" className="min-h-screen flex items-center relative bg-gray-50">
             <div className="container mx-auto px-6">
                 <div className="max-w-4xl">
-                    <SplitText
-                        text="Hello, GSAP!"
-                        className="text-2xl font-semibold text-center"
-                        delay={10}
-                        duration={1.5}
-                        ease="elastic.out(0.3, 0.2)"
-                        splitType="chars"
-                        from={ HERO_ANIMATIONS.slideUp.from }
-                        to={ HERO_ANIMATIONS.slideUp.to }
-                        threshold={0.1}
-                        /*rootMargin="-100px"*/
-                        textAlign="center"
-                        onLetterAnimationComplete={handleAnimationComplete}
-                    />
+                    <div className="mb-6">
+                        <span className="block">
+                        <DecryptedText
+                            text="I'M JEREMY"
+                            speed={30}
+                            maxIterations={15}
+                            sequential={true}
+                            revealDirection="start"
+                            animateOn="view"
+                            className="text-black"
+                            encryptedClassName="text-gray-500"
+                            characters="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*"
+                        />
+                        </span>
+                        <SplitText
+                            text="I'M JEREMY"
+                            className="text-6xl md:text-8xl font-bold block"
+                            delay={10}
+                            duration={1.5}
+                            ease="elastic.out(1, 0.3)"
+                            splitType="chars"
+                            from={{ opacity: 0, y: 60, rotateX: -90 }}
+                            to={{ opacity: 1, y: 0, rotateX: 0 }}
+                            threshold={0.1}
+                            textAlign="left"
+                        />
+                        <SplitText
+                            text="A FULL-STACK"
+                            className="text-6xl md:text-8xl font-bold block text-gray-400"
+                            delay={10}
+                            duration={1.5}
+                            ease="elastic.out(1, 0.3)"
+                            splitType="chars"
+                            from={{ opacity: 0, y: 60, rotateX: -90 }}
+                            to={{ opacity: 1, y: 0, rotateX: 0 }}
+                            threshold={0.1}
+                            textAlign="left"
+                        />
+                        <SplitText
+                            text="DEVELOPER"
+                            className="text-6xl md:text-8xl font-bold block"
+                            delay={10}
+                            duration={1.5}
+                            ease="elastic.out(1, 0.3)"
+                            splitType="chars"
+                            from={{ opacity: 0, y: 60, rotateX: -90 }}
+                            to={{ opacity: 1, y: 0, rotateX: 0 }}
+                            threshold={0.1}
+                            textAlign="left"
+                        />
+                    </div>
 
-                    <Heading level={1} className="mb-6">
+                    {/*<Heading level={1} className="mb-6">
                         <span className="block">I'M JEREMY</span>
                         <span className="block text-gray-400">A FULL-STACK</span>
                         <span className="block">DEVELOPER</span>
-                    </Heading>
+                    </Heading>*/}
+                    <SplitText
+                        text="Building exceptional digital experiences with modern technologies and creative solutions."
+                        className="text-xl text-gray-600 mb-8 max-w-xl"
+                        delay={10}
+                        duration={1.5}
+                        ease="elastic.out(0.3, 0.3)"
+                        splitType="chars"
+                        from={{ opacity: 0, y: 60, rotateX: -90 }}
+                        to={{ opacity: 1, y: 0, rotateX: 0 }}
+                        threshold={0.1}
+                        textAlign="left"
+                    />
+                    <DecryptedText
+                        text="This text animates when in view"
+                        className="text-xl text-gray-600 mb-8 max-w-xl"
+                        animateOn="view"
+                        speed={60}
+                        revealDirection="start"
+
+                    />
                     <p className="text-xl text-gray-600 mb-8 max-w-xl">
                         Building exceptional digital experiences with modern technologies and creative solutions.
                     </p>
