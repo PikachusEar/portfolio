@@ -190,21 +190,22 @@ export default function DecryptedText({
         >
             <span className="sr-only">{displayText}</span>
 
-            <span aria-hidden="true">
-        {displayText.split('').map((char, index) => {
-            const isRevealedOrDone =
-                revealedIndices.has(index) || !isScrambling || !isHovering
+            <span aria-hidden="true" className="inline-flex">
+                {displayText.split('').map((char, index) => {
+                    const isRevealedOrDone =
+                        revealedIndices.has(index) || !isScrambling || !isHovering
 
-            return (
-                <span
-                    key={index}
-                    className={isRevealedOrDone ? className : encryptedClassName}
-                >
-              {char}
+                    return (
+                        <span
+                            key={index}
+                            className={`inline-block ${isRevealedOrDone ? className : encryptedClassName}`}
+                            style={{ whiteSpace: 'pre' }}
+                        >
+                            {char}
+                        </span>
+                    )
+                })}
             </span>
-            )
-        })}
-      </span>
         </motion.span>
     )
 }

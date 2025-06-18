@@ -13,59 +13,52 @@ const HeroSection = ({ scrollToSection }) => {
 
 
     return (
-        <section id="home" className="min-h-screen flex items-center relative bg-gray-50">
+        <section id="home" className="min-h-screen flex items-center relative bg-gray-50 pt-20 md:pt-24">
             <div className="container mx-auto px-6">
                 <div className="max-w-4xl">
                     <div className="mb-6">
-                        <span className="block">
+                        <div className="block">
                         <DecryptedText
                             text="I'M JEREMY"
-                            speed={30}
-                            maxIterations={15}
+                            speed={60}
+                            maxIterations={10}
                             sequential={true}
                             revealDirection="start"
                             animateOn="view"
-                            className="text-black"
-                            encryptedClassName="text-gray-500"
+                            className="text-6xl md:text-8xl font-bold"
+                            parentClassName="block"
+                            encryptedClassName="text-6xl md:text-8xl font-bold block text-gray-300"
                             characters="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*"
                         />
-                        </span>
-                        <SplitText
-                            text="I'M JEREMY"
-                            className="text-6xl md:text-8xl font-bold block"
-                            delay={10}
-                            duration={1.5}
-                            ease="elastic.out(1, 0.3)"
-                            splitType="chars"
-                            from={{ opacity: 0, y: 60, rotateX: -90 }}
-                            to={{ opacity: 1, y: 0, rotateX: 0 }}
-                            threshold={0.1}
-                            textAlign="left"
-                        />
-                        <SplitText
+                        </div>
+                        <div className="block">
+                        <DecryptedText
                             text="A FULL-STACK"
-                            className="text-6xl md:text-8xl font-bold block text-gray-400"
-                            delay={10}
-                            duration={1.5}
-                            ease="elastic.out(1, 0.3)"
-                            splitType="chars"
-                            from={{ opacity: 0, y: 60, rotateX: -90 }}
-                            to={{ opacity: 1, y: 0, rotateX: 0 }}
-                            threshold={0.1}
-                            textAlign="left"
+                            speed={60}
+                            maxIterations={10}
+                            sequential={true}
+                            revealDirection="start"
+                            animateOn="view"
+                            className="text-6xl md:text-8xl font-bold text-gray-400"
+                            parentClassName="block"
+                            encryptedClassName="text-6xl md:text-8xl font-bold block text-gray-300"
+                            characters="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*"
                         />
-                        <SplitText
+                        </div>
+                        <div className="block">
+                        <DecryptedText
                             text="DEVELOPER"
-                            className="text-6xl md:text-8xl font-bold block"
-                            delay={10}
-                            duration={1.5}
-                            ease="elastic.out(1, 0.3)"
-                            splitType="chars"
-                            from={{ opacity: 0, y: 60, rotateX: -90 }}
-                            to={{ opacity: 1, y: 0, rotateX: 0 }}
-                            threshold={0.1}
-                            textAlign="left"
+                            speed={60}
+                            maxIterations={10}
+                            sequential={true}
+                            revealDirection="start"
+                            animateOn="view"
+                            className="text-6xl md:text-8xl font-bold"
+                            parentClassName="block"
+                            encryptedClassName="text-6xl md:text-8xl font-bold block text-gray-300"
+                            characters="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*"
                         />
+                        </div>
                     </div>
 
                     {/*<Heading level={1} className="mb-6">
@@ -73,25 +66,14 @@ const HeroSection = ({ scrollToSection }) => {
                         <span className="block text-gray-400">A FULL-STACK</span>
                         <span className="block">DEVELOPER</span>
                     </Heading>*/}
-                    <SplitText
+                    <DecryptedText
                         text="Building exceptional digital experiences with modern technologies and creative solutions."
                         className="text-xl text-gray-600 mb-8 max-w-xl"
-                        delay={10}
-                        duration={1.5}
-                        ease="elastic.out(0.3, 0.3)"
-                        splitType="chars"
-                        from={{ opacity: 0, y: 60, rotateX: -90 }}
-                        to={{ opacity: 1, y: 0, rotateX: 0 }}
-                        threshold={0.1}
-                        textAlign="left"
-                    />
-                    <DecryptedText
-                        text="This text animates when in view"
-                        className="text-xl text-gray-600 mb-8 max-w-xl"
                         animateOn="view"
-                        speed={60}
+                        sequential={true}
+                        speed={10}
+                        maxIterations={5}
                         revealDirection="start"
-
                     />
                     <p className="text-xl text-gray-600 mb-8 max-w-xl">
                         Building exceptional digital experiences with modern technologies and creative solutions.
