@@ -1,7 +1,7 @@
-// src/services/api.js
+// src/service/api.js
 class StrapiAPI {
     constructor() {
-        this.baseURL = import.meta.env.VITE_STRAPI_URL || 'http://localhost:1337';
+        this.baseURL = import.meta.env.VITE_STRAPI_URL || 'https://api.pikachusear.space';
         this.apiURL = `${this.baseURL}/api`;
     }
 
@@ -15,7 +15,7 @@ class StrapiAPI {
             return data.data;
         } catch (error) {
             console.error('API Error:', error);
-            throw error;
+            return null; // Return null for error handling
         }
     }
 
@@ -38,53 +38,80 @@ class StrapiAPI {
         }
     }
 
-    // Hero Section Data
-    async getHero() {
-        return await this.get('/hero?populate=*');
+    // Helper function to build image URL
+    getImageUrl(image) {
+        if (!image?.data?.attributes?.url) return null;
+        const url = image.data.attributes.url;
+        return url.startsWith('http') ? url : `${this.baseURL}${url}`;
     }
 
     // About Section Data
     async getAbout() {
-        return await this.get('/about?populate=*');
+        const data = await this.get('/about?populate=*');
+        if (!data) return null;
+
+        return {
+            title: data.attributes.title,
+            description: data.attributes.description,
+            secondaryDescription: data.attributes.secondaryDescription,
+            image: this.getImageUrl(data.attributes.image),
+            socialLinks: data.attributes.socialLinks || []
+        };
     }
 
     // Experience Data
     async getExperiences() {
         const data = await this.get('/experiences?populate=*&sort=startDate:desc');
+        if (!data) return null;
+
         return data.map(exp => ({
+            id: exp.id,
             title: exp.attributes.title,
             company: exp.attributes.company,
             period: exp.attributes.period,
-            description: exp.attributes.description
+            startDate: exp.attributes.startDate,
+            endDate: exp.attributes.endDate,
+            description: exp.attributes.description,
+            technologies: exp.attributes.technologies || []
         }));
     }
 
     // Projects Data
     async getProjects() {
         const data = await this.get('/projects?populate=*&sort=order:asc');
+        if (!data) return null;
+
         return data.map(project => ({
             id: project.id,
             title: project.attributes.title,
             description: project.attributes.description,
-            image: project.attributes.image?.data?.attributes?.url,
+            image: this.getImageUrl(project.attributes.image),
             techStack: project.attributes.techStack || [],
             liveUrl: project.attributes.liveUrl,
-            githubUrl: project.attributes.githubUrl
+            githubUrl: project.attributes.githubUrl,
+            featured: project.attributes.featured || false,
+            order: project.attributes.order || 0
         }));
     }
 
     // Skills Data
     async getSkills() {
         const data = await this.get('/skill-categories?populate=*&sort=order:asc');
+        if (!data) return null;
+
         return data.map(category => ({
+            id: category.id,
             category: category.attributes.name,
-            skills: category.attributes.skills.map(skill => skill.name)
+            skills: category.attributes.skills?.map(skill => skill.name) || [],
+            order: category.attributes.order || 0
         }));
     }
 
     // Blog Posts Data
     async getBlogPosts() {
         const data = await this.get('/blog-posts?populate=*&sort=publishedAt:desc');
+        if (!data) return null;
+
         return data.map(post => ({
             id: post.id,
             date: new Date(post.attributes.publishedAt).toLocaleDateString('en-US', {
@@ -95,8 +122,54 @@ class StrapiAPI {
             title: post.attributes.title,
             excerpt: post.attributes.excerpt,
             slug: post.attributes.slug,
-            featuredImage: post.attributes.featuredImage?.data?.attributes?.url
+            featuredImage: this.getImageUrl(post.attributes.featuredImage),
+            content: post.attributes.content,
+            publishedAt: post.attributes.publishedAt
         }));
+    }
+
+    // Get single blog post by slug
+    async getBlogPost(slug) {
+        const data = await this.get(`/blog-posts?populate=*&filters[slug][$eq]=${slug}`);
+        if (!data || data.length === 0) return null;
+
+        const post = data[0];
+        return {
+            id: post.id,
+            date: new Date(post.attributes.publishedAt).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            }).toUpperCase(),
+            title: post.attributes.title,
+            excerpt: post.attributes.excerpt,
+            slug: post.attributes.slug,
+            featuredImage: this.getImageUrl(post.attributes.featuredImage),
+            content: post.attributes.content,
+            publishedAt: post.attributes.publishedAt
+        };
+    }
+
+    // Get single project by id
+    async getProject(id) {
+        const data = await this.get(`/projects/${id}?populate=*`);
+        if (!data) return null;
+
+        return {
+            id: data.id,
+            title: data.attributes.title,
+            description: data.attributes.description,
+            longDescription: data.attributes.longDescription,
+            image: this.getImageUrl(data.attributes.image),
+            gallery: data.attributes.gallery?.data?.map(img => this.getImageUrl({data: img})) || [],
+            techStack: data.attributes.techStack || [],
+            liveUrl: data.attributes.liveUrl,
+            githubUrl: data.attributes.githubUrl,
+            featured: data.attributes.featured || false,
+            challenges: data.attributes.challenges,
+            solutions: data.attributes.solutions,
+            features: data.attributes.features || []
+        };
     }
 
     // Contact Form Submission
@@ -107,32 +180,6 @@ class StrapiAPI {
             message: formData.message,
             submittedAt: new Date().toISOString()
         });
-    }
-
-    // Fetch All Portfolio Data
-    async getPortfolioData() {
-        try {
-            const [hero, about, experiences, projects, skills, blogPosts] = await Promise.all([
-                this.getHero(),
-                this.getAbout(),
-                this.getExperiences(),
-                this.getProjects(),
-                this.getSkills(),
-                this.getBlogPosts()
-            ]);
-
-            return {
-                hero,
-                about,
-                experiences,
-                projects,
-                skills,
-                blogPosts
-            };
-        } catch (error) {
-            console.error('Failed to fetch portfolio data:', error);
-            throw error;
-        }
     }
 }
 
