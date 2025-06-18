@@ -66,7 +66,7 @@ const HeroButton = ({
         return (
             <div
                 data-bubble-menu="true"
-                className={`absolute top-0 left-full ml-4 pointer-events-auto transition-all duration-300 ${
+                className={`absolute top-0 left-full ml-4 pointer-events-auto transition-all duration-300 z-50 ${
                     isHovered ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4 pointer-events-none'
                 }`}
                 onMouseEnter={handleMenuMouseEnter}
@@ -76,7 +76,7 @@ const HeroButton = ({
                     {projectTitles.map((title, index) => (
                         <div
                             key={title}
-                            className={`bg-white text-black z-50 px-4 py-2 rounded-lg text-sm whitespace-nowrap shadow-lg border transition-all duration-300 cursor-pointer hover:bg-gray-100 hover:scale-105 ${
+                            className={`bg-white text-black px-4 py-2 rounded-lg text-sm whitespace-nowrap shadow-lg border transition-all duration-300 cursor-pointer hover:bg-gray-100 hover:scale-105 ${
                                 isHovered ? 'translate-x-0 opacity-100' : 'translate-x-4 opacity-0'
                             }`}
                             style={{
