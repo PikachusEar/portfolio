@@ -71,7 +71,7 @@ const HeroSection = ({ scrollToSection }) => {
                             onClick={(e) => scrollToSection(e, '#projects')}
                             href="#projects"
                             className="group w-full sm:w-auto justify-center sm:justify-start"
-                            showBubbles={false} // Disable bubbles on mobile for better UX
+                            showBubbles={true}
                             onProjectSelect={handleProjectSelect}
                         >
                             <span>VIEW PROJECTS</span>

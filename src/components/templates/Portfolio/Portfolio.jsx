@@ -68,7 +68,7 @@ const Portfolio = () => {
                 cursorRef.current.style.transform = `translate3d(${x - offset}px, ${y - offset}px, 0)`;
             }
         });
-    }, [isMobile, isHovering]);
+    }, [isMobile, FRAME_TIME, isHovering]);
 
     // 🎯 OPTIMIZED HOVER DETECTION (PRESERVES EXACT HOVER BEHAVIOR)
     const handleMouseOver = useCallback((e) => {
@@ -81,8 +81,7 @@ const Portfolio = () => {
             e.target.closest('button') ||
             e.target.closest('[role="button"]')
         );
-
-        // 🔄 SMART DEBOUNCING (NO VISUAL DELAY, JUST PERFORMANCE OPTIMIZATION)
+        
         if (hoverTimeout.current) {
             clearTimeout(hoverTimeout.current);
         }
@@ -94,13 +93,11 @@ const Portfolio = () => {
         }, 6); // Minimal delay, invisible to users but prevents excessive updates
 
     }, [isMobile, isHovering]);
-
-    // 🔄 OPTIMIZED SCROLL HANDLER
+    
     const handleScroll = useCallback(() => {
         setScrolled(window.scrollY > 50);
     }, []);
-
-    // 🚀 OPTIMIZED SETUP WITH PRESERVED VISUAL EFFECTS
+    
     useEffect(() => {
         checkMobile();
 
@@ -111,8 +108,7 @@ const Portfolio = () => {
         window.addEventListener('mousemove', handleMouseMove, options);
         window.addEventListener('resize', checkMobile, options);
         window.addEventListener('mouseover', handleMouseOver, options);
-
-        // 🧹 COMPLETE CLEANUP
+        
         return () => {
             window.removeEventListener('scroll', handleScroll);
             window.removeEventListener('mousemove', handleMouseMove);
@@ -143,7 +139,6 @@ const Portfolio = () => {
 
     return (
         <div className="min-h-screen bg-white text-black overflow-x-hidden" style={{ cursor: !isMobile ? 'none' : 'auto' }}>
-            {/* 🎨 ORIGINAL VISUAL DESIGN PRESERVED + OPTIMIZED PERFORMANCE */}
             {!isMobile && (
                 <div
                     ref={cursorRef}
@@ -151,13 +146,9 @@ const Portfolio = () => {
                         isHovering ? 'w-12 h-12' : 'w-8 h-8'
                     }`}
                     style={{
-                        // 🚀 PERFORMANCE OPTIMIZATIONS (VISUAL APPEARANCE UNCHANGED)
                         transform: 'translate3d(-16px, -16px, 0)', // GPU acceleration + initial position
                         willChange: 'transform', // Optimize for frequent transforms
                         backfaceVisibility: 'hidden', // Prevent flickering
-                        // 🎨 ORIGINAL VISUAL EFFECTS PRESERVED
-                        // mix-blend-difference is applied via Tailwind class above
-                        // All original visual styling maintained
                     }}
                 />
             )}
