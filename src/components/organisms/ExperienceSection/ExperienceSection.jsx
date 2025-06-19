@@ -47,8 +47,8 @@ const ExperienceSection = () => {
     }
 
     return (
-        <section id="experience" className="py-20 bg-gray-50">
-            <div className="container mx-auto px-6">
+        <section id="experience" className="py-12 sm:py-16 md:py-20 bg-gray-50">
+            <div className="container mx-auto px-4 sm:px-6">
                 <SectionHeader number="02" title="EXPERIENCE" />
                 <div className="max-w-4xl space-y-12">
                     {experiences.map((exp) => (

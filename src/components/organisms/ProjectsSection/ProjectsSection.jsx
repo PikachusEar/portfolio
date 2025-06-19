@@ -28,10 +28,10 @@ const ProjectsSection = () => {
 
     if (loading) {
         return (
-            <section id="projects" className="py-20">
-                <div className="container mx-auto px-6">
+            <section id="projects" className="py-12 sm:py-16 md:py-20">
+                <div className="container mx-auto px-4 sm:px-6">
                     <SectionHeader number="03" title="PROJECTS" />
-                    <div className="grid md:grid-cols-3 gap-8">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
                         {[1, 2, 3].map((i) => (
                             <div key={i} className="group relative overflow-hidden">
                                 <div className="aspect-video bg-gray-200 animate-pulse"></div>

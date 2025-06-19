@@ -66,7 +66,7 @@ const HeroButton = ({
         return (
             <div
                 data-bubble-menu="true"
-                className={`absolute top-0 left-full ml-4 pointer-events-auto transition-all duration-300 z-50 ${
+                className={`absolute top-0 left-full ml-4 pointer-events-auto transition-all duration-300 z-30 ${
                     isHovered ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4 pointer-events-none'
                 }`}
                 onMouseEnter={handleMenuMouseEnter}

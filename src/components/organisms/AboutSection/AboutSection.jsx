@@ -47,12 +47,12 @@ const AboutSection = () => {
     }
 
     return (
-        <section id="about" className="py-20 relative">
-            <div className="container mx-auto px-6">
+        <section id="about" className="py-12 sm:py-16 md:py-20 relative">
+            <div className="container mx-auto px-4 sm:px-6">
                 <SectionHeader number="01" title={aboutData.title || "ABOUT ME"} />
-                <div className="grid md:grid-cols-2 gap-12 items-center max-w-6xl">
-                    <div className="relative">
-                        <div className="aspect-square bg-gray-100">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center max-w-6xl">
+                    <div className="relative order-2 md:order-1">
+                        <div className="aspect-square bg-gray-100 relative">
                             {aboutData.image ? (
                                 <img
                                     src={aboutData.image}
@@ -67,18 +67,19 @@ const AboutSection = () => {
                                 />
                             )}
                         </div>
-                        <div className="absolute -bottom-4 -right-4 w-full h-full border-4 border-black -z-10"></div>
+                        {/* Adjusted border positioning for mobile */}
+                        <div className="absolute -bottom-2 -right-2 md:-bottom-4 md:-right-4 w-full h-full border-2 md:border-4 border-black -z-10"></div>
                     </div>
-                    <div>
-                        <p className="text-xl leading-relaxed mb-6">
+                    <div className="order-1 md:order-2">
+                        <p className="text-lg sm:text-xl leading-relaxed mb-6">
                             {aboutData.description}
                         </p>
                         {aboutData.secondaryDescription && (
-                            <p className="text-xl leading-relaxed text-gray-600">
+                            <p className="text-lg sm:text-xl leading-relaxed text-gray-600">
                                 {aboutData.secondaryDescription}
                             </p>
                         )}
-                        <SocialLinks className="mt-8" socialLinks={aboutData.socialLinks} />
+                        <SocialLinks className="mt-6 sm:mt-8" socialLinks={aboutData.socialLinks} />
                     </div>
                 </div>
             </div>

@@ -28,10 +28,10 @@ const BlogSection = () => {
 
     if (loading) {
         return (
-            <section id="blog" className="py-20">
-                <div className="container mx-auto px-6">
+            <section id="blog" className="py-12 sm:py-16 md:py-20">
+                <div className="container mx-auto px-4 sm:px-6">
                     <SectionHeader number="05" title="BLOG" />
-                    <div className="grid md:grid-cols-2 gap-8 max-w-6xl">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-6xl">
                         {[1, 2, 3, 4].map((i) => (
                             <article key={i} className="border-b border-gray-200 pb-8 animate-pulse">
                                 <div className="h-4 bg-gray-200 mb-2 w-1/3"></div>
