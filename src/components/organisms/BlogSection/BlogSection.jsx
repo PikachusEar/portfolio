@@ -30,7 +30,7 @@ const BlogSection = () => {
         return (
             <section id="blog" className="py-12 sm:py-16 md:py-20">
                 <div className="container mx-auto px-4 sm:px-6">
-                    <SectionHeader number="05" title="BLOG" />
+                    <SectionHeader number="5" title="BLOG" />
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-6xl">
                         {[1, 2, 3, 4].map((i) => (
                             <article key={i} className="border-b border-gray-200 pb-8 animate-pulse">

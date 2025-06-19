@@ -49,7 +49,7 @@ const AboutSection = () => {
     return (
         <section id="about" className="py-12 sm:py-16 md:py-20 relative">
             <div className="container mx-auto px-4 sm:px-6">
-                <SectionHeader number="01" title={aboutData.title || "ABOUT ME"} />
+                <SectionHeader number="1" title={aboutData.title || "ABOUT ME"} />
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center max-w-6xl">
                     <div className="relative order-2 md:order-1">
                         <div className="aspect-square bg-gray-100 relative">

@@ -51,7 +51,7 @@ const SkillsSection = () => {
     return (
         <section className="py-12 sm:py-16 md:py-20 bg-gray-50">
             <div className="container mx-auto px-4 sm:px-6">
-                <SectionHeader number="04" title="SKILLS" />
+                <SectionHeader number="4" title="SKILLS" />
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 max-w-6xl">
                     {skillCategories.map((category) => (
                         <SkillCategory key={category.id || category.category} {...category} />

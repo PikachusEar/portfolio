@@ -6,7 +6,7 @@ import { SectionHeader } from '../../molecules';
 const ContactSection = () => (
     <section id="contact" className="py-12 sm:py-16 md:py-20 bg-gray-50">
         <div className="container mx-auto px-4 sm:px-6">
-            <SectionHeader number="06" title="LET'S WORK" />
+            <SectionHeader number="6" title="LET'S WORK" />
             <p className="text-lg sm:text-xl md:text-2xl mb-8 sm:mb-12 max-w-2xl">
                 Have a project in mind? Let's create something amazing together.
             </p>

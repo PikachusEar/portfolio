@@ -30,7 +30,7 @@ const ProjectsSection = () => {
         return (
             <section id="projects" className="py-12 sm:py-16 md:py-20">
                 <div className="container mx-auto px-4 sm:px-6">
-                    <SectionHeader number="03" title="PROJECTS" />
+                    <SectionHeader number="3" title="PROJECTS" />
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
                         {[1, 2, 3].map((i) => (
                             <div key={i} className="group relative overflow-hidden">
@@ -46,7 +46,7 @@ const ProjectsSection = () => {
     return (
         <section id="projects" className="py-20">
             <div className="container mx-auto px-6">
-                <SectionHeader number="03" title="PROJECTS" />
+                <SectionHeader number="3" title="PROJECTS" />
                 <div className="grid md:grid-cols-3 gap-8">
                     {projects.map((project) => (
                         <ProjectCard key={project.id} {...project} />
