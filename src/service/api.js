@@ -40,9 +40,9 @@ class StrapiAPI {
 
     // Helper function to build image URL
     getImageUrl(image) {
-        if (!image?.data?.attributes?.url) return null;
-        const url = image.data.attributes.url;
-        return url.startsWith('http') ? url : `${this.baseURL}${url}`;
+        if (!image?.url) return null;
+        const url = image.url;
+        return url.startsWith('https') ? url : `${this.baseURL}${url}`;
     }
 
     // About Section Data
@@ -102,7 +102,7 @@ class StrapiAPI {
         return data.map(category => ({
             id: category.id,
             category: category.name,
-            skills: category.skills?.map(skill => skill.name) || [],
+            skills: category.skills?.name || [],
             order: category.order || 0
         }));
     }
@@ -129,7 +129,7 @@ class StrapiAPI {
     }
 
     // Get single blog post by slug
-    async getBlogPost(slug) {
+    /* async getBlogPost(slug) {
         const data = await this.get(`/blog-posts?populate=*&filters[slug][$eq]=${slug}`);
         if (!data || data.length === 0) return null;
 
@@ -148,10 +148,10 @@ class StrapiAPI {
             content: post.attributes.content,
             publishedAt: post.attributes.publishedAt
         };
-    }
+    } */
 
     // Get single project by id
-    async getProject(id) {
+    /* async getProject(id) {
         const data = await this.get(`/projects/${id}?populate=*`);
         if (!data) return null;
 
@@ -170,17 +170,17 @@ class StrapiAPI {
             solutions: data.attributes.solutions,
             features: data.attributes.features || []
         };
-    }
+    } */
 
     // Contact Form Submission
-    async submitContact(formData) {
+    /* async submitContact(formData) {
         return await this.post('/contacts', {
             name: formData.name,
             email: formData.email,
             message: formData.message,
             submittedAt: new Date().toISOString()
         });
-    }
+    } */
 }
 
 export default new StrapiAPI();
