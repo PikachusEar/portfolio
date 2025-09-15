@@ -51,11 +51,11 @@ class StrapiAPI {
         if (!data) return null;
 
         return {
-            title: data.attributes.title,
-            description: data.attributes.description,
-            secondaryDescription: data.attributes.secondaryDescription,
-            image: this.getImageUrl(data.attributes.image),
-            socialLinks: data.attributes.socialLinks || []
+            title: data.title,
+            description: data.description,
+            secondaryDescription: data.secondaryDescription,
+            image: this.getImageUrl(data.image),
+            socialLinks: data.socialLinks || []
         };
     }
 
@@ -66,13 +66,13 @@ class StrapiAPI {
 
         return data.map(exp => ({
             id: exp.id,
-            title: exp.attributes.title,
-            company: exp.attributes.company,
-            period: exp.attributes.period,
-            startDate: exp.attributes.startDate,
-            endDate: exp.attributes.endDate,
-            description: exp.attributes.description,
-            technologies: exp.attributes.technologies || []
+            title: exp.title,
+            company: exp.company,
+            period: exp.period,
+            startDate: exp.startDate,
+            endDate: exp.endDate,
+            description: exp.description,
+            technologies: exp.technologies
         }));
     }
 
@@ -83,14 +83,14 @@ class StrapiAPI {
 
         return data.map(project => ({
             id: project.id,
-            title: project.attributes.title,
-            description: project.attributes.description,
-            image: this.getImageUrl(project.attributes.image),
-            techStack: project.attributes.techStack || [],
-            liveUrl: project.attributes.liveUrl,
-            githubUrl: project.attributes.githubUrl,
-            featured: project.attributes.featured || false,
-            order: project.attributes.order || 0
+            title: project.title,
+            description: project.description,
+            image: this.getImageUrl(project.image),
+            techStack: project.techStack || [],
+            liveUrl: project.liveUrl,
+            githubUrl: project.githubUrl,
+            featured: project.featured || false,
+            order: project.order || 0
         }));
     }
 
@@ -101,9 +101,9 @@ class StrapiAPI {
 
         return data.map(category => ({
             id: category.id,
-            category: category.attributes.name,
-            skills: category.attributes.skills?.map(skill => skill.name) || [],
-            order: category.attributes.order || 0
+            category: category.name,
+            skills: category.skills?.map(skill => skill.name) || [],
+            order: category.order || 0
         }));
     }
 
@@ -114,17 +114,17 @@ class StrapiAPI {
 
         return data.map(post => ({
             id: post.id,
-            date: new Date(post.attributes.publishedAt).toLocaleDateString('en-US', {
+            date: new Date(post.publishedAt).toLocaleDateString('en-US', {
                 year: 'numeric',
                 month: 'long',
                 day: 'numeric'
             }).toUpperCase(),
-            title: post.attributes.title,
-            excerpt: post.attributes.excerpt,
-            slug: post.attributes.slug,
-            featuredImage: this.getImageUrl(post.attributes.featuredImage),
-            content: post.attributes.content,
-            publishedAt: post.attributes.publishedAt
+            title: post.title,
+            excerpt: post.excerpt,
+            slug: post.slug,
+            featuredImage: this.getImageUrl(post.featuredImage),
+            content: post.content,
+            publishedAt: post.publishedAt
         }));
     }
 
