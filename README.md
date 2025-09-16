@@ -19,7 +19,10 @@ src/
 │   ├── molecules/      # Component combinations (NavItem, ProjectCard, etc.)
 │   ├── organisms/      # Complex sections (Navigation, HeroSection, etc.)
 │   └── templates/      # Page layouts (Portfolio)
-├── assets/             # Static assets
+├── data/
+│   └── defaultData.js  # All portfolio content and configuration
+├── service/
+│   └── api.js          # API utilities
 └── index.css          # Global styles and Tailwind imports
 ```
 
@@ -71,11 +74,20 @@ npm run dev
 
 ### Content Updates
 
-1. **Personal Information**: Update name and details in `HeroSection.jsx`
-2. **Experience**: Modify the experiences array in `ExperienceSection.jsx`
-3. **Skills**: Update skill categories in `SkillsSection.jsx`
-4. **Blog Posts**: Edit articles array in `BlogSection.jsx`
-5. **Contact Info**: Change email in `ContactSection.jsx`
+The portfolio supports two content management approaches:
+
+#### Static Content (Default)
+All portfolio content is centrally managed in `src/data/defaultData.js`. Update the following exports:
+
+1. **Personal Information**: Modify `DEFAULT_ABOUT` object
+2. **Experience**: Update `DEFAULT_EXPERIENCES` array
+3. **Projects**: Edit `DEFAULT_PROJECTS` array
+4. **Skills**: Modify `DEFAULT_SKILLS` object
+5. **Blog Posts**: Update `DEFAULT_BLOG` array
+6. **Contact Info**: Change details in `DEFAULT_CONTACT` object
+
+#### Dynamic Content with Strapi CMS
+The portfolio includes a Strapi API integration for dynamic content management. See the [Strapi Integration](#strapi-integration) section below for setup details.
 
 ### Styling
 
@@ -98,6 +110,7 @@ The project uses atomic design principles:
 - **Vite 6** - Fast build tool and dev server
 - **Tailwind CSS 3** - Utility-first CSS framework
 - **Lucide React** - Icon library
+- **Strapi CMS** - Headless CMS for content management
 - **ESLint** - Code linting and formatting
 
 ## Browser Support
@@ -112,6 +125,104 @@ The project uses atomic design principles:
 - Lighthouse Score: 95+ (Performance, Accessibility, Best Practices, SEO)
 - First Contentful Paint: <1.5s
 - Largest Contentful Paint: <2.5s
+
+## Strapi Integration
+
+This portfolio includes a complete Strapi CMS integration for dynamic content management. The API service (`src/service/api.js`) provides methods to fetch content from a Strapi backend.
+
+### API Configuration
+
+Set the Strapi API URL using environment variables:
+
+```bash
+# .env.local
+VITE_STRAPI_URL=https://your-strapi-instance.com
+```
+
+If no environment variable is set, it defaults to `https://api.pikachusear.space`.
+
+### Content Types
+
+The Strapi integration supports the following content types:
+
+#### About Section (`/api/about`)
+- **title**: Text field
+- **description**: Rich text/Textarea
+- **secondaryDescription**: Rich text/Textarea  
+- **image**: Media (single image)
+- **socialLinks**: JSON field (array of social media links)
+
+#### Experience (`/api/experiences`)
+- **title**: Text field (job title)
+- **company**: Text field
+- **period**: Text field (e.g., "2023 - Present")
+- **startDate**: Date field
+- **endDate**: Date field (optional)
+- **description**: Rich text/Textarea
+- **technologies**: JSON field (array of technology names)
+
+#### Projects (`/api/projects`)
+- **title**: Text field
+- **description**: Rich text/Textarea
+- **image**: Media (single image)
+- **techStack**: JSON field (array of technologies)
+- **liveUrl**: Text field (URL)
+- **githubUrl**: Text field (URL)
+- **featured**: Boolean field
+- **order**: Number field (for sorting)
+
+#### Skills (`/api/skill-categories`)
+- **name**: Text field (category name)
+- **skills**: Component/Dynamic Zone with skill items
+- **order**: Number field (for sorting)
+
+#### Blog Posts (`/api/blog-posts`)
+- **title**: Text field
+- **excerpt**: Text field (short description)
+- **content**: Rich text field
+- **slug**: UID field (auto-generated from title)
+- **featuredImage**: Media (single image)
+- **publishedAt**: DateTime field
+
+### API Methods
+
+The `StrapiAPI` class provides the following methods:
+
+```javascript
+import strapiAPI from './src/service/api.js';
+
+// Fetch content
+const about = await strapiAPI.getAbout();
+const experiences = await strapiAPI.getExperiences();
+const projects = await strapiAPI.getProjects();
+const skills = await strapiAPI.getSkills();
+const blogPosts = await strapiAPI.getBlogPosts();
+
+// Helper method for images
+const imageUrl = strapiAPI.getImageUrl(imageObject);
+```
+
+### Error Handling
+
+The API service includes built-in error handling:
+- Returns `null` for failed GET requests (graceful degradation)
+- Logs errors to console for debugging
+- Automatically falls back to default data when API is unavailable
+
+### Local Development with Strapi
+
+1. Set up a local Strapi instance or use a remote deployment
+2. Create the content types mentioned above
+3. Add sample content through the Strapi admin panel
+4. Update your `.env.local` file with the correct API URL
+5. The portfolio will automatically fetch and display the dynamic content
+
+### Mixed Content Strategy
+
+The portfolio can seamlessly mix static and dynamic content:
+- Use static content from `defaultData.js` as fallbacks
+- Override with dynamic content from Strapi when available
+- Perfect for gradual migration or hybrid content strategies
 
 ## Deployment
 
