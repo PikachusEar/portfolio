@@ -1,9 +1,25 @@
 // src/components/organisms/HeroSection/HeroSection.jsx
-import React from 'react';
+import React, {useEffect} from 'react';
 import { ArrowRight } from 'lucide-react';
 import { HeroButton, Heading, SplitText, DecryptedText } from '../../atoms';
+import { DEFAULT_PROJECTS } from '../../../data/defaultData';
+import StrapiAPI from "../../../service/api.js";
 
 const HeroSection = ({ scrollToSection }) => {
+    const [projectTitle, setProjectTitle] = React.useState(DEFAULT_PROJECTS.map(t => t.title));
+    useEffect(() => {
+        const fetchProjects = async () => {
+            try {
+                const data = await StrapiAPI.getProjects();
+                if (data && data.length > 0) {
+                    setProjectTitle(data.map(t => t.title));
+                }
+            } catch (error) {
+                console.error('Failed to fetch projects:', error);
+            }
+        };
+        fetchProjects();
+    }, []);
     const handleProjectSelect = (projectTitle, index) => {
         console.log(`Selected project: ${projectTitle} (index: ${index})`);
         // TODO: Navigate to specific project or show project details
@@ -73,6 +89,7 @@ const HeroSection = ({ scrollToSection }) => {
                             className="group w-full sm:w-auto justify-center sm:justify-start"
                             showBubbles={true}
                             onProjectSelect={handleProjectSelect}
+                            projectTitles={projectTitle}
                         >
                             <span>VIEW PROJECTS</span>
                             <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />

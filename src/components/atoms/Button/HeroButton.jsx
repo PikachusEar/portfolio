@@ -8,14 +8,8 @@ const HeroButton = ({
                     href,
                     className = '',
                     showBubbles = false,
-                    projectTitles = [
-                        "E-Commerce Platform",
-                        "Task Management App",
-                        "Weather Dashboard",
-                        "Social Media Analytics",
-                        "Portfolio Website"
-                    ], // Default temporary data
-                    onProjectSelect = () => {}, // Callback for project selection
+                    projectTitles = [],
+                    onProjectSelect = () => {},
                     ...props
                 }) => {
     const [isHovered, setIsHovered] = useState(false);
