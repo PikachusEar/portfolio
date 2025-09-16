@@ -49,7 +49,7 @@ const BlogSection = () => {
     return (
         <section id="blog" className="py-20">
             <div className="container mx-auto px-6">
-                <SectionHeader number="05" title="BLOG" />
+                <SectionHeader number="5" title="BLOG" />
                 <div className="grid md:grid-cols-2 gap-8 max-w-6xl">
                     {articles.map((article) => (
                         <BlogArticle key={article.id} {...article} />
