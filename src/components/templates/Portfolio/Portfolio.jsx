@@ -20,31 +20,31 @@ const Portfolio = () => {
     const [isMobile, setIsMobile] = useState(false);
     const [isHovering, setIsHovering] = useState(false);
 
-    // 🚀 PERFORMANCE OPTIMIZATION REFS (NO VISUAL CHANGES)
+    // PERFORMANCE OPTIMIZATION REFS (NO VISUAL CHANGES)
     const cursorRef = useRef(null);
     const rafId = useRef(null);
     const lastUpdate = useRef(0);
     const hoverTimeout = useRef(null);
 
-    // 🎮 HIGH REFRESH RATE THROTTLING (VISUAL REMAINS SMOOTH)
+    // HIGH REFRESH RATE THROTTLING (VISUAL REMAINS SMOOTH)
     const MAX_FPS = 60;
     const FRAME_TIME = 1000 / MAX_FPS;
 
-    // 📱 MOBILE DETECTION (NO VISUAL CHANGES ON DESKTOP)
+    // MOBILE DETECTION (NO VISUAL CHANGES ON DESKTOP)
     const checkMobile = useCallback(() => {
         const mobile = window.innerWidth < 768;
         setIsMobile(mobile);
         return mobile;
     }, []);
 
-    // 🔥 ULTRA-OPTIMIZED MOUSE HANDLER (PRESERVES EXACT VISUAL BEHAVIOR)
+    // OPTIMIZED MOUSE HANDLER (PRESERVES EXACT VISUAL BEHAVIOR)
     const handleMouseMove = useCallback((e) => {
         // Early exit for mobile (cursor hidden anyway)
         if (isMobile) return;
 
         const now = performance.now();
 
-        // 🎮 THROTTLE FOR HIGH REFRESH RATES (MAINTAINS SMOOTH APPEARANCE)
+        // HROTTLE FOR HIGH REFRESH RATES (MAINTAINS SMOOTH APPEARANCE)
         if (now - lastUpdate.current < FRAME_TIME) {
             return;
         }
@@ -56,7 +56,7 @@ const Portfolio = () => {
             cancelAnimationFrame(rafId.current);
         }
 
-        // 🚀 OPTIMIZED RAF UPDATE (IDENTICAL VISUAL RESULT)
+        // OPTIMIZED RAF UPDATE (IDENTICAL VISUAL RESULT)
         rafId.current = requestAnimationFrame(() => {
             if (cursorRef.current) {
                 const x = e.clientX;
@@ -70,7 +70,7 @@ const Portfolio = () => {
         });
     }, [isMobile, FRAME_TIME, isHovering]);
 
-    // 🎯 OPTIMIZED HOVER DETECTION (PRESERVES EXACT HOVER BEHAVIOR)
+    // OPTIMIZED HOVER DETECTION (PRESERVES EXACT HOVER BEHAVIOR)
     const handleMouseOver = useCallback((e) => {
         if (isMobile) return;
 
@@ -101,7 +101,7 @@ const Portfolio = () => {
     useEffect(() => {
         checkMobile();
 
-        // 🎧 PASSIVE EVENT LISTENERS (PERFORMANCE BOOST, NO VISUAL CHANGES)
+        // PASSIVE EVENT LISTENERS (PERFORMANCE BOOST, NO VISUAL CHANGES)
         const options = { passive: true };
 
         window.addEventListener('scroll', handleScroll, options);
@@ -153,7 +153,7 @@ const Portfolio = () => {
                 />
             )}
 
-            {/* 🏗️ ORIGINAL COMPONENT STRUCTURE UNCHANGED */}
+            {/* ORIGINAL COMPONENT STRUCTURE UNCHANGED */}
             <Navigation scrolled={scrolled} navItems={navItems} scrollToSection={scrollToSection} />
             <HeroSection scrollToSection={scrollToSection} />
             <AboutSection />
