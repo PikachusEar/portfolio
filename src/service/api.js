@@ -3,11 +3,27 @@ class StrapiAPI {
     constructor() {
         this.baseURL = import.meta.env.VITE_STRAPI_URL || 'https://api.pikachusear.space';
         this.apiURL = `${this.baseURL}/api`;
+        this.token = import.meta.env.VITE_STRAPI_TOKEN;
+    }
+    // Helper method to get headers with authentication
+    getHeaders() {
+        const headers = {
+            'Content-Type': 'application/json',
+        };
+
+        if (this.token) {
+            headers['Authorization'] = `Bearer ${this.token}`;
+        }
+
+        return headers;
     }
 
     async get(endpoint) {
         try {
-            const response = await fetch(`${this.apiURL}${endpoint}`);
+            const response = await fetch(`${this.apiURL}${endpoint}`, {
+                method: 'GET',
+                headers: this.getHeaders(),
+            });
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
