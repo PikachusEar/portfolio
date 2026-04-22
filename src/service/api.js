@@ -145,7 +145,7 @@ class StrapiAPI {
     }
 
     // Get single blog post by slug
-    /* async getBlogPost(slug) {
+     async getBlogPost(slug) {
         const data = await this.get(`/blog-posts?populate=*&filters[slug][$eq]=${slug}`);
         if (!data || data.length === 0) return null;
 
@@ -164,7 +164,7 @@ class StrapiAPI {
             content: post.attributes.content,
             publishedAt: post.attributes.publishedAt
         };
-    } */
+    }
 
     // Get single project by id
     /* async getProject(id) {
