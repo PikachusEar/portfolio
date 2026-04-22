@@ -1,18 +1,21 @@
 // src/components/organisms/HeroSection/HeroSection.jsx
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import { ArrowRight } from 'lucide-react';
-import { HeroButton, Heading, SplitText, DecryptedText } from '../../atoms';
+import { HeroButton, DecryptedText } from '../../atoms';
 import { DEFAULT_PROJECTS } from '../../../data/defaultData';
-import StrapiAPI from "../../../service/api.js";
+import StrapiAPI from '../../../service/api.js';
 
 const HeroSection = ({ scrollToSection }) => {
-    const [projectTitle, setProjectTitle] = React.useState(DEFAULT_PROJECTS.map(t => t.title));
+    const [projects, setProjects] = React.useState(
+        DEFAULT_PROJECTS.map(p => ({ id: p.id, title: p.title }))
+    );
+
     useEffect(() => {
         const fetchProjects = async () => {
             try {
                 const data = await StrapiAPI.getProjects();
                 if (data && data.length > 0) {
-                    setProjectTitle(data.map(t => t.title));
+                    setProjects(data.map(p => ({ id: p.id, title: p.title })));
                 }
             } catch (error) {
                 console.error('Failed to fetch projects:', error);
@@ -20,13 +23,6 @@ const HeroSection = ({ scrollToSection }) => {
         };
         fetchProjects();
     }, []);
-    const handleProjectSelect = (projectTitle, index) => {
-        console.log(`Selected project: ${projectTitle} (index: ${index})`);
-        // TODO: Navigate to specific project or show project details
-        // For now, scroll to projects section
-        document.querySelector('#projects')?.scrollIntoView({ behavior: 'smooth' });
-    };
-
 
     return (
         <section id="home" className="min-h-screen flex items-center relative bg-gray-50 pt-20 md:pt-24 px-4 sm:px-6">
@@ -88,8 +84,8 @@ const HeroSection = ({ scrollToSection }) => {
                             href="#projects"
                             className="group w-full sm:w-auto justify-center sm:justify-start"
                             showBubbles={true}
-                            onProjectSelect={handleProjectSelect}
-                            projectTitles={projectTitle}
+                            projectTitles={projects.map(p => p.title)}
+                            projectIds={projects.map(p => p.id)}
                         >
                             <span>VIEW PROJECTS</span>
                             <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
@@ -98,10 +94,10 @@ const HeroSection = ({ scrollToSection }) => {
                 </div>
             </div>
 
-            {/* Animated Background Elements - Hidden on small screens */}
+            {/* Animated background — hidden on small screens */}
             <div className="absolute inset-0 -z-10 hidden sm:block">
-                <div className="absolute top-20 right-20 w-96 h-96 bg-gray-100 rounded-full blur-3xl opacity-50 animate-pulse"></div>
-                <div className="absolute bottom-20 left-20 w-96 h-96 bg-gray-200 rounded-full blur-3xl opacity-50 animate-pulse animation-delay-2000"></div>
+                <div className="absolute top-20 right-20 w-96 h-96 bg-gray-100 rounded-full blur-3xl opacity-50 animate-pulse" />
+                <div className="absolute bottom-20 left-20 w-96 h-96 bg-gray-200 rounded-full blur-3xl opacity-50 animate-pulse animation-delay-2000" />
             </div>
         </section>
     );

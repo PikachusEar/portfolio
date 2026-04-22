@@ -1,24 +1,25 @@
-// src/components/atoms/HeroButton/HeroButton.jsx
+// src/components/atoms/Button/HeroButton.jsx
 import React, { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const HeroButton = ({
-                    children,
-                    variant = 'primary',
-                    onClick,
-                    href,
-                    className = '',
-                    showBubbles = false,
-                    projectTitles = [],
-                    onProjectSelect = () => {},
-                    ...props
-                }) => {
+                        children,
+                        variant = 'primary',
+                        onClick,
+                        href,
+                        className = '',
+                        showBubbles = false,
+                        projectTitles = [],
+                        projectIds = [],         // <-- NEW: parallel array of project ids
+                        onProjectSelect = () => {},
+                        ...props
+                    }) => {
     const [isHovered, setIsHovered] = useState(false);
     const timeoutRef = useRef(null);
+    const navigate = useNavigate();
 
     const handleMouseEnter = () => {
-        if (timeoutRef.current) {
-            clearTimeout(timeoutRef.current);
-        }
+        if (timeoutRef.current) clearTimeout(timeoutRef.current);
         setIsHovered(true);
     };
 
@@ -27,9 +28,7 @@ const HeroButton = ({
     };
 
     const handleMenuMouseEnter = () => {
-        if (timeoutRef.current) {
-            clearTimeout(timeoutRef.current);
-        }
+        if (timeoutRef.current) clearTimeout(timeoutRef.current);
         setIsHovered(true);
     };
 
@@ -37,21 +36,17 @@ const HeroButton = ({
         setIsHovered(false);
     };
 
-    // Cleanup timeout on unmount
     useEffect(() => {
         return () => {
-            if (timeoutRef.current) {
-                clearTimeout(timeoutRef.current);
-            }
+            if (timeoutRef.current) clearTimeout(timeoutRef.current);
         };
     }, []);
 
     const baseClasses = "px-8 py-4 font-bold transition-all flex items-center space-x-2 relative overflow-visible";
     const variants = {
         primary: "bg-black text-white hover:bg-gray-800",
-        secondary: "border-2 border-black hover:bg-black hover:text-white"
+        secondary: "border-2 border-black hover:bg-black hover:text-white",
     };
-
     const classes = `${baseClasses} ${variants[variant]} ${className}`;
 
     const renderBubbles = () => {
@@ -73,15 +68,20 @@ const HeroButton = ({
                             className={`bg-white text-black px-4 py-2 rounded-lg text-sm whitespace-nowrap shadow-lg border transition-all duration-300 cursor-pointer hover:bg-gray-100 hover:scale-105 ${
                                 isHovered ? 'translate-x-0 opacity-100' : 'translate-x-4 opacity-0'
                             }`}
-                            style={{
-                                transitionDelay: `${index * 50}ms`,
-                                zIndex: 50
-                            }}
+                            style={{ transitionDelay: `${index * 50}ms`, zIndex: 50 }}
                             onClick={(e) => {
                                 e.preventDefault();
                                 e.stopPropagation();
+                                setIsHovered(false);
                                 onProjectSelect(title, index);
-                                setIsHovered(false); // Close menu after selection
+                                // Navigate to project detail if id is available
+                                const projectId = projectIds[index];
+                                if (projectId) {
+                                    navigate(`/projects/${projectId}`);
+                                } else {
+                                    // Fallback: scroll to projects section
+                                    document.querySelector('#projects')?.scrollIntoView({ behavior: 'smooth' });
+                                }
                             }}
                         >
                             {title}
