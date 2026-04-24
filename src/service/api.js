@@ -167,7 +167,7 @@ class StrapiAPI {
     }
 
     // Get single project by id
-    /* async getProject(id) {
+     async getProject(id) {
         const data = await this.get(`/projects/${id}?populate=*`);
         if (!data) return null;
 
@@ -186,7 +186,7 @@ class StrapiAPI {
             solutions: data.attributes.solutions,
             features: data.attributes.features || []
         };
-    } */
+    }
 
     // Contact Form Submission
     /* async submitContact(formData) {
