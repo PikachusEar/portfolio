@@ -6,8 +6,82 @@ import Layout from '../Layout/Layout';
 import strapiAPI from '../../../service/api';
 import { DEFAULT_BLOG_POSTS } from '../../../data/defaultData';
 
-/* ─── Reading time helper ───────────────────────────────────────────────────── */
-const calcReadTime = (html = '') => {
+/* ─── Strapi v5 Blocks → HTML converter ────────────────────────────────────────
+   Strapi's "blocks" rich-text field returns a JSON array of block nodes.
+   This function walks the tree and produces an HTML string that matches the
+   existing .blog-content CSS already defined in index.css.
+────────────────────────────────────────────────────────────────────────────── */
+const inlineToHtml = (children = []) =>
+    children.map(child => {
+        if (child.type === 'link') {
+            return `<a href="${child.url}">${inlineToHtml(child.children)}</a>`;
+        }
+        let text = child.text ?? '';
+        // Escape HTML entities in raw text
+        text = text
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
+        if (child.bold)          text = `<strong>${text}</strong>`;
+        if (child.italic)        text = `<em>${text}</em>`;
+        if (child.underline)     text = `<u>${text}</u>`;
+        if (child.strikethrough) text = `<s>${text}</s>`;
+        if (child.code)          text = `<code>${text}</code>`;
+        return text;
+    }).join('');
+
+const blocksToHtml = (blocks = []) => {
+    if (!Array.isArray(blocks)) return typeof blocks === 'string' ? blocks : '';
+
+    return blocks.map(block => {
+        const inner = inlineToHtml(block.children || []);
+
+        switch (block.type) {
+            case 'paragraph':
+                return `<p>${inner}</p>`;
+
+            case 'heading': {
+                const level = block.level ?? 2;
+                return `<h${level}>${inner}</h${level}>`;
+            }
+
+            case 'list': {
+                const tag = block.format === 'ordered' ? 'ol' : 'ul';
+                const items = (block.children || [])
+                    .map(item => `<li>${inlineToHtml(item.children || [])}</li>`)
+                    .join('');
+                return `<${tag}>${items}</${tag}>`;
+            }
+
+            case 'quote':
+                return `<blockquote>${inner}</blockquote>`;
+
+            case 'code':
+                return `<pre><code>${inlineToHtml(block.children || [])}</code></pre>`;
+
+            case 'image': {
+                const src = block.image?.url ?? '';
+                const alt = block.image?.alternativeText ?? '';
+                return `<img src="${src}" alt="${alt}" />`;
+            }
+
+            case 'divider':
+                return '<hr />';
+
+            default:
+                // Unknown block type — render its text children as a paragraph
+                return inner ? `<p>${inner}</p>` : '';
+        }
+    }).join('\n');
+};
+
+/* ─── Reading time helper ─────────────────────────────────────────────────────
+   Handles both a plain HTML string (default/fallback data) and a Strapi v5
+   blocks array so calcReadTime never crashes on a non-string value.
+────────────────────────────────────────────────────────────────────────────── */
+const calcReadTime = (content = '') => {
+    // If it's an array it came from Strapi v5 blocks — convert first
+    const html = Array.isArray(content) ? blocksToHtml(content) : String(content);
     const text = html.replace(/<[^>]+>/g, '');
     const words = text.trim().split(/\s+/).length;
     return Math.max(1, Math.round(words / 200));
@@ -73,7 +147,13 @@ const Blog = () => {
     if (!post) return <Layout><NotFound onBack={handleBack} /></Layout>;
 
     const { date, title, excerpt, content, featuredImage } = post;
-    const readTime = calcReadTime(content || excerpt || '');
+
+    // Convert blocks → HTML string once so both readTime and the renderer use it
+    const contentHtml = Array.isArray(content)
+        ? blocksToHtml(content)
+        : (content || '');
+
+    const readTime = calcReadTime(contentHtml || excerpt || '');
 
     return (
         <Layout>
@@ -133,10 +213,10 @@ const Blog = () => {
 
             {/* ── Body ── */}
             <article className="container mx-auto px-6 max-w-3xl pb-24">
-                {content ? (
+                {contentHtml ? (
                     <div
                         className="blog-content"
-                        dangerouslySetInnerHTML={{ __html: content }}
+                        dangerouslySetInnerHTML={{ __html: contentHtml }}
                     />
                 ) : (
                     /* Fallback: no content yet (default data only has excerpt) */

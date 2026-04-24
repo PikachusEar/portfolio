@@ -5,6 +5,7 @@ class StrapiAPI {
         this.apiURL = `${this.baseURL}/api`;
         this.token = import.meta.env.VITE_STRAPI_TOKEN;
     }
+
     // Helper method to get headers with authentication
     getHeaders() {
         const headers = {
@@ -31,7 +32,7 @@ class StrapiAPI {
             return data.data;
         } catch (error) {
             console.error('API Error:', error);
-            return null; // Return null for error handling
+            return null;
         }
     }
 
@@ -55,6 +56,7 @@ class StrapiAPI {
     }
 
     // Helper function to build image URL
+    // Strapi v5: image is a flat object with a .url property directly on it
     getImageUrl(image) {
         if (!image?.url) return null;
         const url = image.url;
@@ -92,13 +94,14 @@ class StrapiAPI {
         }));
     }
 
-    // Projects Data
+    // Projects List Data
     async getProjects() {
         const data = await this.get('/projects?populate=*&sort=order:asc');
         if (!data) return null;
 
         return data.map(project => ({
-            id: project.id,
+            // Strapi v5: single-entry endpoints require documentId, not numeric id
+            id: project.documentId,
             title: project.title,
             description: project.description,
             image: this.getImageUrl(project.image),
@@ -108,6 +111,30 @@ class StrapiAPI {
             featured: project.featured || false,
             order: project.order || 0
         }));
+    }
+
+    // Get single project by id (Strapi v5: id param is documentId string)
+    // FIX: Strapi v5 returns flat fields — removed all .attributes references
+    // FIX: gallery is a plain array of image objects (no .data wrapper)
+    async getProject(id) {
+        const data = await this.get(`/projects/${id}?populate=*`);
+        if (!data) return null;
+
+        return {
+            id: data.documentId,
+            title: data.title,
+            description: data.description,
+            longDescription: data.longDescription,
+            image: this.getImageUrl(data.image),
+            gallery: (data.gallery || []).map(img => this.getImageUrl(img)).filter(Boolean),
+            techStack: data.techStack || [],
+            liveUrl: data.liveUrl,
+            githubUrl: data.githubUrl,
+            featured: data.featured || false,
+            challenges: data.challenges,
+            solutions: data.solutions,
+            features: data.features || []
+        };
     }
 
     // Skills Data
@@ -123,7 +150,7 @@ class StrapiAPI {
         }));
     }
 
-    // Blog Posts Data
+    // Blog Posts List Data
     async getBlogPosts() {
         const data = await this.get('/blog-posts?populate=*&sort=publishedAt:desc');
         if (!data) return null;
@@ -145,46 +172,25 @@ class StrapiAPI {
     }
 
     // Get single blog post by slug
-     async getBlogPost(slug) {
+    // FIX: Strapi v5 returns flat fields — removed all .attributes references
+    async getBlogPost(slug) {
         const data = await this.get(`/blog-posts?populate=*&filters[slug][$eq]=${slug}`);
         if (!data || data.length === 0) return null;
 
         const post = data[0];
         return {
             id: post.id,
-            date: new Date(post.attributes.publishedAt).toLocaleDateString('en-US', {
+            date: new Date(post.publishedAt).toLocaleDateString('en-US', {
                 year: 'numeric',
                 month: 'long',
                 day: 'numeric'
             }).toUpperCase(),
-            title: post.attributes.title,
-            excerpt: post.attributes.excerpt,
-            slug: post.attributes.slug,
-            featuredImage: this.getImageUrl(post.attributes.featuredImage),
-            content: post.attributes.content,
-            publishedAt: post.attributes.publishedAt
-        };
-    }
-
-    // Get single project by id
-     async getProject(id) {
-        const data = await this.get(`/projects/${id}?populate=*`);
-        if (!data) return null;
-
-        return {
-            id: data.id,
-            title: data.attributes.title,
-            description: data.attributes.description,
-            longDescription: data.attributes.longDescription,
-            image: this.getImageUrl(data.attributes.image),
-            gallery: data.attributes.gallery?.data?.map(img => this.getImageUrl({data: img})) || [],
-            techStack: data.attributes.techStack || [],
-            liveUrl: data.attributes.liveUrl,
-            githubUrl: data.attributes.githubUrl,
-            featured: data.attributes.featured || false,
-            challenges: data.attributes.challenges,
-            solutions: data.attributes.solutions,
-            features: data.attributes.features || []
+            title: post.title,
+            excerpt: post.excerpt,
+            slug: post.slug,
+            featuredImage: this.getImageUrl(post.featuredImage),
+            content: post.content,
+            publishedAt: post.publishedAt
         };
     }
 
